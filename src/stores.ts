@@ -1,6 +1,6 @@
+import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import type { DOMWidgetModel } from '@jupyter-widgets/base';
-import { writable } from 'svelte/store';
 
 import type { IDFProfileWState } from './common/exchangeInterfaces'
 
@@ -63,3 +63,9 @@ export const dfProfile = WidgetWritable<IDFProfileWState>('dfProfile', {
 export function setStoreModels(model: DOMWidgetModel): void {
   dfProfile.setModel(model);
 }
+
+
+// UI stores
+export const currentHoveredCol: Writable<string> = writable(undefined);
+export const allowLogs: Writable<boolean> = writable(false);
+export const showIndex: Writable<boolean> = writable(false);
