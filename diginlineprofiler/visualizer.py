@@ -17,6 +17,8 @@ from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getCo
     getQuantMeta, getColMeta, getValueCounts, getQuantBinnedData, getTempBinnedData, getTempInterval, \
     getStringStats
 
+from .utils import convertVC, convertQMeta, convertBinned
+
 class Visualizer(DOMWidget):
     # boilerplate for ipywidgets syncing
     _model_name = Unicode('VizualizerModel').tag(sync=True)
@@ -42,7 +44,6 @@ class Visualizer(DOMWidget):
         self.calculateChartData()
     
     def calculateChartData(self):
-        print("calculating chart data...")
         # get columns and check that all names are unique
         df = self.dataframe
                 
@@ -63,7 +64,7 @@ class Visualizer(DOMWidget):
                 "isIndex": False,
                 "summary": {
                     "cardinality": num_unique,
-                    "topK": vc # TODO this might not be right type
+                    "topK": convertVC(vc, cName) # TODO this might not be right type
                 },
                 "nullCount": num_null,
                 "example": vc.index[0]
@@ -71,36 +72,25 @@ class Visualizer(DOMWidget):
 
 
             if isNumeric(df[cName]):
+                # get data
                 chartData = getQuantBinnedData(df, cName, isIndex=False)
                 statistics = getQuantMeta(df, cName, isIndex=False)
+                # convert to JSON serializable
+                statistics = convertQMeta(statistics)
+                chartData = convertBinned(chartData, statistics["min"])
 
-                # TODO replace min on far bin with true min and convert histogram to array
                 cd["summary"]["statistics"] = statistics
                 cd["summary"]["histogram"] = chartData
             elif isTimestamp(df[cName]):
+                # get data
                 vc, true_min = getTempBinnedData(df, cName, isIndex=False)
                 interval = getTempInterval(df, cName, isIndex=False)
 
-                # TODO convert this to an array
-                timebin = vc
-                histogram = vc
+                # convert to JSON serializable
+                histogram = convertBinned(vc, true_min)
 
                 cd["summary"]["histogram"] = histogram
-
-                timeSummary = {
-                    "interval": interval,
-                    "rollup": {
-                        "results": timebin,
-                        "spark": timebin,
-                        "timeRange": {
-                            "start": true_min,
-                            "end": None,
-                            "interval": interval
-                        }
-                    }
-                }
-
-                cd["summary"]["timeSummary"] = timeSummary
+                cd["summary"]["timeInterval"] = interval
 
             elif isCategorical(df[cName]):
                 minLength, maxLength, meanLength = getStringStats(df, cName)
@@ -118,13 +108,10 @@ class Visualizer(DOMWidget):
             "profile": colProfiles,
             "shape": shape,
             "dfName": "testNameDude",
-            "lastUpdatedTime": 100,
+            "lastUpdatedTime": 0,
             "isPinned": False,
             "warnings": []
         }
-
-        print("Python profile: ", profile)
-
         # TODO save profile to trailet to sync with frontend
         self.dfProfile = profile
 
