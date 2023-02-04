@@ -1,12 +1,21 @@
 <script lang="ts">
-  import { value } from './stores';
-
-  let localValue = $value;
+  import DFProfile from './components/DFProfile.svelte';
+  import { dfProfile } from './stores';
 </script>
 
-<p>The value is {$value}</p>
-<p>Hello world!!!!!!!</p>
-<p>is this working</p>
+<div class="divider" />
 
-<input bind:value={localValue} />
-<button on:click={() => value.set(localValue)}>Set Value</button>
+<DFProfile
+  dfName={$dfProfile.dfName}
+  dataframeProfile={$dfProfile.profile}
+  shape={$dfProfile.shape}
+  isInFocus={false}
+  isPinned={$dfProfile.isPinned}
+/>
+
+<style>
+  .divider {
+    height: 50px;
+    background-color: red;
+  }
+</style>

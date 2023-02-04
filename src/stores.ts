@@ -1,7 +1,8 @@
 import type { Writable } from 'svelte/store';
 import type { DOMWidgetModel } from '@jupyter-widgets/base';
-
 import { writable } from 'svelte/store';
+
+import type { IDFProfileWState } from './common/exchangeInterfaces'
 
 interface WidgetWritable<T> extends Writable<T> {
   setModel: (m: DOMWidgetModel) => void;
@@ -48,9 +49,17 @@ export function WidgetWritable<T>(name_: string, value_: T): WidgetWritable<T> {
 }
 
 // Declare stores with their associated Traitlets here.
-export const value = WidgetWritable<string>('value', '');
+export const dfProfile = WidgetWritable<IDFProfileWState>('dfProfile', {
+  profile: [],
+  shape: [0, 0],
+  dfName: 'test',
+  lastUpdatedTime: 0,
+  isPinned: false,
+  warnings: [],
+});
+
 
 // Set the model for each store you create.
 export function setStoreModels(model: DOMWidgetModel): void {
-  value.setModel(model);
+  dfProfile.setModel(model);
 }
