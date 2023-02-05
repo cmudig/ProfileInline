@@ -1,4 +1,4 @@
-import type { ProfileModel } from "../dataAPI/ProfileModel";
+import type { NotebookAPI } from "../dataAPI/jupyter/notebook";
 import { allowLogs } from "../stores";
 import { get } from "svelte/store";
 
@@ -9,11 +9,11 @@ interface LogEvent {
 }
 
 export class Logger {
-    private _profileModel: ProfileModel;
+    private _notebook: NotebookAPI;
     private _logs: LogEvent[] = []
-    constructor(pm: ProfileModel) {
+    constructor(notebook?: NotebookAPI) {
         this._logs = []
-        this._profileModel = pm
+        this._notebook = notebook
 
         // save logs every 5 seconds
         setInterval(() => {
@@ -31,8 +31,9 @@ export class Logger {
 
     save() {
         const allowSave = get(allowLogs)
-        if (this._profileModel.notebook && allowSave) {
-            this._profileModel.notebook.saveToNotebookMetadata("AutoProfilerLogs", this._logs)
+        this.printAllLogs()
+        if (this._notebook && allowSave) {
+            this._notebook.saveToNotebookMetadata("AutoProfilerLogs", this._logs)
         }
     }
 }

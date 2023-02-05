@@ -1,11 +1,7 @@
 <script lang="ts">
     import { fly } from 'svelte/transition';
-    import { getContext } from 'svelte';
-    import type { ProfileModel } from '../../../dataAPI/ProfileModel';
     import { exportCodeSelection } from '../../export-code/ExportableCode';
     import { formatNumeric } from '../../utils/formatters';
-
-    const profileModel: ProfileModel = getContext('autoprofiler:profileModel');
 
     // Props
     export let defaultColor: string;
@@ -56,7 +52,8 @@
         // alt key or option key on mac
         if (event.altKey) {
             let code = exportCodeSelection(dfName, colName, label, isIndex);
-            profileModel.addCell('code', code);
+            // addCell('code', code);
+            console.log(code);
         }
     }
 </script>

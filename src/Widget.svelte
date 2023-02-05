@@ -3,19 +3,9 @@
   import { dfProfile } from './stores';
 </script>
 
-<div class="divider" />
-
 <DFProfile
   dfName={$dfProfile.dfName}
-  dataframeProfile={$dfProfile.profile}
-  shape={$dfProfile.shape}
+  dataframeProfile={$dfProfile}
   isInFocus={false}
   isPinned={$dfProfile.isPinned}
 />
-
-<style>
-  .divider {
-    height: 50px;
-    background-color: red;
-  }
-</style>

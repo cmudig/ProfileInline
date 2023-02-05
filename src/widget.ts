@@ -7,9 +7,7 @@ import {
   ISerializers,
 } from '@jupyter-widgets/base';
 import { setStoreModels } from './stores';
-
 import { MODULE_NAME, MODULE_VERSION } from './version';
-
 import Widget from './Widget.svelte'
 
 export class VizualizerModel extends DOMWidgetModel {
@@ -22,7 +20,7 @@ export class VizualizerModel extends DOMWidgetModel {
       _view_name: VizualizerModel.view_name,
       _view_module: VizualizerModel.view_module,
       _view_module_version: VizualizerModel.view_module_version,
-      value: 'Hello World typescript',
+      dfProfile: {}
     };
   }
 
@@ -41,7 +39,16 @@ export class VizualizerModel extends DOMWidgetModel {
 
 export class VizualizerView extends DOMWidgetView {
   render() {
+    console.log("Rendering VisualizerView")
     setStoreModels(this.model);
     new Widget({ target: this.el });
   }
+
+  // TODO figure out how to add a cell here?
+
+  // public addCell(kind: 'code' | 'markdown', text: string) {
+  //   if (this.notebook) {
+  //     this.notebook.addCell(kind, text);
+  //   }
+  // }
 }

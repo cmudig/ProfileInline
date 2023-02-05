@@ -9,14 +9,13 @@ Visualizer module for widgets
 """
 
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Integer, Dict, List
-from ._frontend import module_name, module_version
-
+from traitlets import Unicode, Dict
 import pandas as pd
+
+from ._frontend import module_name, module_version
 from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getColumns, getShape, \
     getQuantMeta, getColMeta, getValueCounts, getQuantBinnedData, getTempBinnedData, getTempInterval, \
     getStringStats
-
 from .utils import convertVC, convertQMeta, convertBinned
 
 class Visualizer(DOMWidget):
@@ -34,16 +33,16 @@ class Visualizer(DOMWidget):
     # python only state
     dataframe = None
 
-    def __init__(self, dataframe, *args, **kwargs):
+    def __init__(self, dataframe: pd.DataFrame, dfName: str, *args, **kwargs):
         super(Visualizer, self).__init__(*args, **kwargs)
 
         if not isinstance(dataframe, pd.DataFrame):
-            raise TypeError("Dataframe must be a pandas DataFrame!")
+            raise ValueError("dataframe must be a pandas DataFrame!")
 
         self.dataframe = dataframe
-        self.calculateChartData()
+        self.calculateChartData(dfName)
     
-    def calculateChartData(self):
+    def calculateChartData(self, dfName: str):
         # get columns and check that all names are unique
         df = self.dataframe
                 
@@ -69,7 +68,6 @@ class Visualizer(DOMWidget):
                 "nullCount": num_null,
                 "example": vc.index[0]
             }
-
 
             if isNumeric(df[cName]):
                 # get data
@@ -107,17 +105,10 @@ class Visualizer(DOMWidget):
         profile = {
             "profile": colProfiles,
             "shape": shape,
-            "dfName": "testNameDude",
+            "dfName": dfName,
             "lastUpdatedTime": 0,
             "isPinned": False,
             "warnings": []
         }
         # TODO save profile to trailet to sync with frontend
         self.dfProfile = profile
-
-
-        
-
-
-
-

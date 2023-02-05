@@ -1,6 +1,4 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
-    import type { ProfileModel } from '../../dataAPI/ProfileModel';
     import RightArrow from '../icons/RightArrow.svelte';
     import Tooltip from '../tooltip/Tooltip.svelte';
     import TooltipContent from '../tooltip/TooltipContent.svelte';
@@ -15,8 +13,6 @@
         shouldDisableMaxRows?: boolean;
     } = undefined;
     export let isIndex = false;
-
-    const profileModel: ProfileModel = getContext('autoprofiler:profileModel');
 
     function addVisCode() {
         let text: string;
@@ -38,7 +34,10 @@
             );
         }
 
-        profileModel.addCell('code', text);
+        console.log(text);
+
+        // TODO add cell here
+        // addCell('code', text);
     }
 </script>
 
@@ -52,8 +51,8 @@
             <RightArrow size="16px" />
         </button>
 
-        <TooltipContent slot="tooltip-content">
-            Export chart to code
-        </TooltipContent>
+        <TooltipContent slot="tooltip-content"
+            >Export chart to code</TooltipContent
+        >
     </Tooltip>
 </div>

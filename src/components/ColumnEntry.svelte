@@ -1,17 +1,14 @@
 <script lang="ts">
-    import { getContext } from 'svelte';
     import { currentHoveredCol } from '../stores';
-    import type { ProfileModel } from '../dataAPI/ProfileModel';
+    import { logger } from '../stores';
 
     export let active = false;
     export let hideRight = false;
     export let hoverKey: string;
     export let dfName: string;
 
-    const profileModel: ProfileModel = getContext('autoprofiler:profileModel');
-
     function logColumnAction(actionName: string) {
-        profileModel.logger.log(actionName, { dfName, colName: hoverKey });
+        logger.log(actionName, { dfName, colName: hoverKey });
     }
 </script>
 
