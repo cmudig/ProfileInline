@@ -6,9 +6,10 @@ import {
   DOMWidgetView,
   ISerializers,
 } from '@jupyter-widgets/base';
-import { setStoreModels } from './stores';
+import { WidgetWritable } from './stores';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import Widget from './Widget.svelte'
+import type { IDFProfileWState } from './common/exchangeInterfaces'
 
 export class VizualizerModel extends DOMWidgetModel {
   defaults() {
@@ -39,16 +40,20 @@ export class VizualizerModel extends DOMWidgetModel {
 
 export class VizualizerView extends DOMWidgetView {
   render() {
-    console.log("Rendering VisualizerView")
-    setStoreModels(this.model);
-    new Widget({ target: this.el });
+
+    const dfProfile = WidgetWritable<IDFProfileWState>(
+      'dfProfile',
+      {
+        profile: [],
+        shape: [0, 0],
+        dfName: 'test',
+        lastUpdatedTime: 0,
+        isPinned: false,
+        warnings: []
+      },
+      this.model
+    );
+
+    new Widget({ target: this.el, props: { dfProfileStore: dfProfile } });
   }
-
-  // TODO figure out how to add a cell here?
-
-  // public addCell(kind: 'code' | 'markdown', text: string) {
-  //   if (this.notebook) {
-  //     this.notebook.addCell(kind, text);
-  //   }
-  // }
 }

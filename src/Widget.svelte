@@ -1,11 +1,14 @@
 <script lang="ts">
-  import DFProfile from './components/DFProfile.svelte';
-  import { dfProfile } from './stores';
+    import DFProfile from './components/DFProfile.svelte';
+    import type { Writable } from 'svelte/store';
+    import type { IDFProfileWState } from './common/exchangeInterfaces';
+
+    export let dfProfileStore: Writable<IDFProfileWState>;
 </script>
 
 <DFProfile
-  dfName={$dfProfile.dfName}
-  dataframeProfile={$dfProfile}
-  isInFocus={false}
-  isPinned={$dfProfile.isPinned}
+    dfName={$dfProfileStore.dfName}
+    dataframeProfile={$dfProfileStore}
+    isInFocus={false}
+    isPinned={$dfProfileStore.isPinned}
 />

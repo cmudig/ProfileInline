@@ -110,5 +110,5 @@ class Visualizer(DOMWidget):
             "isPinned": False,
             "warnings": []
         }
-        # TODO save profile to trailet to sync with frontend
+        # save profile to trailet to sync with frontend
         self.dfProfile = profile

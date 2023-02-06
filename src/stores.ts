@@ -1,17 +1,15 @@
 import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import type { DOMWidgetModel } from '@jupyter-widgets/base';
-import type { IDFProfileWState } from './common/exchangeInterfaces'
-// import { Logger } from './logger/Logger';
 
-interface WidgetWritable<T> extends Writable<T> {
-  setModel: (m: DOMWidgetModel) => void;
-}
-
-export function WidgetWritable<T>(name_: string, value_: T): WidgetWritable<T> {
+export function WidgetWritable<T>(name_: string, value_: T, model: DOMWidgetModel): Writable<T> {
   const name: string = name_;
-  const internalWritable: Writable<any> = writable(value_);
-  let model: DOMWidgetModel;
+  const internalWritable: Writable<any> = writable(model.get(name_) || value_);
+  model.on(
+    'change:' + name,
+    () => internalWritable.set(model.get(name)),
+    null
+  );
 
   return {
     set: (v: any) => {
@@ -32,40 +30,11 @@ export function WidgetWritable<T>(name_: string, value_: T): WidgetWritable<T> {
         return output;
       });
     },
-    setModel: (m: DOMWidgetModel) => {
-      model = m;
-      const modelValue = model.get(name);
-      if (modelValue) {
-        internalWritable.set(modelValue);
-      }
-
-      model.on(
-        'change:' + name,
-        () => internalWritable.set(model.get(name)),
-        null
-      );
-    },
   };
 }
 
-// Declare stores with their associated Traitlets here.
-export const dfProfile = WidgetWritable<IDFProfileWState>('dfProfile', {
-  profile: [],
-  shape: [0, 0],
-  dfName: 'test',
-  lastUpdatedTime: 0,
-  isPinned: false,
-  warnings: [],
-});
-
-
-// Set the model for each store you create.
-export function setStoreModels(model: DOMWidgetModel): void {
-  dfProfile.setModel(model);
-}
-
-
 // UI stores
+// NOTE by default all the stores in this file are synced across all widget instances
 export const currentHoveredCol: Writable<string> = writable(undefined);
 export const allowLogs: Writable<boolean> = writable(false);
 export const showIndex: Writable<boolean> = writable(false);

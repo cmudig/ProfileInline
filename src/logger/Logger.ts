@@ -37,7 +37,7 @@ class Logger {
 
     save() {
         const allowSave = get(allowLogs)
-        this.printAllLogs()
+        // this.printAllLogs()
         if (this._notebook && allowSave) {
             this._notebook.saveToNotebookMetadata("AutoProfilerLogs", this._logs)
         }
