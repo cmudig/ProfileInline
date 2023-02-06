@@ -1,42 +1,46 @@
 // Copyright (c) Will Epperson
 // Distributed under the terms of the Modified BSD License.
 
-import type { Application, IPlugin } from '@phosphor/application';
 
-import type { Widget } from '@phosphor/widgets';
+import type {
+  JupyterFrontEnd,
+  JupyterFrontEndPlugin
+} from '@jupyterlab/application';
 
 import { IJupyterWidgetRegistry } from '@jupyter-widgets/base';
-
 import * as widgetExports from './widget';
-
 import { MODULE_NAME, MODULE_VERSION } from './version';
+// import { INotebookTracker } from '@jupyterlab/notebook';
 
 const EXTENSION_ID = 'diginlineprofiler:plugin';
 
 /**
  * The example plugin.
  */
-const examplePlugin: IPlugin<Application<Widget>, void> = ({
+const extension: JupyterFrontEndPlugin<void> = {
   id: EXTENSION_ID,
-  requires: [IJupyterWidgetRegistry],
-  activate: activateWidgetExtension,
+  requires: [IJupyterWidgetRegistry], // INotebookTracker],
+  activate: (app: JupyterFrontEnd, registry: IJupyterWidgetRegistry) => { // nbtracker: INotebookTracker) => {
+
+    console.log("activating extension")
+    registry.registerWidget({
+      name: MODULE_NAME,
+      version: MODULE_VERSION,
+      exports: widgetExports,
+    });
+
+    // emitted when the user's notebook changes I think...
+    // notebookTracker.currentChanged.connect((_, widget) => {
+    //   console.log(">>>>>>>>Notebook changed>>>>>>>>")
+    //   const notebook = new NotebookAPI(widget);
+    //   notebook.ready.then(async () => {
+    //     logger.setNoteook(notebook);
+    //   });
+    // });
+
+  },
   autoStart: true,
-} as unknown) as IPlugin<Application<Widget>, void>;
-// the "as unknown as ..." typecast above is solely to support JupyterLab 1
-// and 2 in the same codebase and should be removed when we migrate to Lumino.
+};
 
-export default examplePlugin;
+export default extension;
 
-/**
- * Activate the widget extension.
- */
-function activateWidgetExtension(
-  app: Application<Widget>,
-  registry: IJupyterWidgetRegistry
-): void {
-  registry.registerWidget({
-    name: MODULE_NAME,
-    version: MODULE_VERSION,
-    exports: widgetExports,
-  });
-}

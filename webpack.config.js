@@ -7,7 +7,7 @@ const rules = [
   { test: /\.ts$/, loader: 'ts-loader' },
   { test: /\.js$/, loader: 'source-map-loader' },
   { test: /\.css$/, use: ['style-loader', 'css-loader']},
-    {
+  {
     test: /\.svelte$/,
     loader: 'svelte-loader',
     options: {
@@ -16,6 +16,10 @@ const rules = [
     }}),
     }
   },
+  {
+    test: /\.svg$/,
+    loader: 'svg-url-loader'
+}
 ];
 
 // Packages that shouldn't be bundled but loaded at runtime

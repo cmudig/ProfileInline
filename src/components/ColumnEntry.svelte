@@ -1,6 +1,6 @@
 <script lang="ts">
     import { currentHoveredCol } from '../stores';
-    import { logger } from '../stores';
+    import { logger } from '../logger/Logger';
 
     export let active = false;
     export let hideRight = false;

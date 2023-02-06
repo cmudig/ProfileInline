@@ -8,10 +8,11 @@ interface LogEvent {
     details?: any;
 }
 
-export class Logger {
+class Logger {
     private _notebook: NotebookAPI;
     private _logs: LogEvent[] = []
     constructor(notebook?: NotebookAPI) {
+        console.log("Logger created")
         this._logs = []
         this._notebook = notebook
 
@@ -23,6 +24,11 @@ export class Logger {
 
     log(eventname: string, details?: any) {
         this._logs.push({ eventname, timestamp: new Date(), details })
+    }
+
+    setNoteook(notebook: NotebookAPI) {
+        console.log("setting notebook in logger")
+        this._notebook = notebook
     }
 
     printAllLogs() {
@@ -37,3 +43,5 @@ export class Logger {
         }
     }
 }
+
+export const logger = new Logger()

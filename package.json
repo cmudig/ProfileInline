@@ -43,7 +43,7 @@
     "watch:labextension": "jupyter labextension watch ."
   },
   "dependencies": {
-    "@jupyter-widgets/base": "^1.1.10 || ^2.0.0 || ^3.0.0 || ^4.0.0",
+    "@jupyter-widgets/base": "^1.1 || ^2 || ^3 || ^4 || ^6",
     "@jupyterlab/application": "^3.4.8",
     "@jupyterlab/notebook": "^3.4.8",
     "d3-format": "^3.1.0",
@@ -57,13 +57,13 @@
     "@babel/core": "^7.5.0",
     "@babel/preset-env": "^7.5.0",
     "@jupyterlab/builder": "^3.0.0",
-    "@phosphor/application": "^1.6.0",
-    "@phosphor/widgets": "^1.6.0",
     "@tsconfig/svelte": "^2.0.1",
+    "@types/lodash": "^4.14.186",
     "@types/webpack-env": "^1.13.6",
     "@typescript-eslint/eslint-plugin": "^3.6.0",
     "@typescript-eslint/parser": "^3.6.0",
     "acorn": "^7.2.0",
+    "autoprefixer": "^10.4.12",
     "css-loader": "^3.2.0",
     "eslint": "^7.4.0",
     "eslint-config-prettier": "^6.11.0",
@@ -73,31 +73,28 @@
     "identity-obj-proxy": "^3.0.0",
     "mkdirp": "^0.5.1",
     "npm-run-all": "^4.1.3",
+    "postcss": "^8.4.17",
     "prettier": "^2.0.5",
+    "prettier-plugin-svelte": "^2.7.1",
     "rimraf": "^2.6.2",
     "source-map-loader": "^1.1.3",
     "style-loader": "^1.0.0",
-    "svelte": "^3.1.4",
-    "svelte-loader": "^3.1.1",
-    "svelte-preprocess": "4.7.0",
-    "ts-loader": "^8.0.0",
-    "typescript": "~4.1.3",
-    "webpack": "^5.0.0",
-    "webpack-cli": "^4.0.0",
-    "@types/lodash": "^4.14.186",
-    "arquero": "^4.8.8",
-    "autoprefixer": "^10.4.12",
-    "postcss": "^8.4.17",
-    "prettier-plugin-svelte": "^2.7.1",
     "stylelint": "^14.13.0",
     "stylelint-config-prettier": "^9.0.3",
     "stylelint-config-recommended": "^7.0.0",
     "stylelint-config-standard": "~25.0.0",
     "stylelint-prettier": "^2.0.0",
+    "svelte": "^3.50.1",
     "svelte-collapse": "^0.1.1",
+    "svelte-loader": "^3.1.1",
     "svelte-loading-spinners": "^0.1.7",
+    "svelte-preprocess": "4.7.0",
     "svg-url-loader": "^8.0.0",
-    "tailwindcss": "^3.1.8"
+    "tailwindcss": "^3.1.8",
+    "ts-loader": "^8.0.0",
+    "typescript": "~4.1.3",
+    "webpack": "^5.74.0",
+    "webpack-cli": "^4.0.0"
   },
   "jupyterlab": {
     "extension": "lib/index",
@@ -108,10 +105,6 @@
         "singleton": true
       },
       "@jupyterlab/notebook": {
-        "bundled": false,
-        "singleton": true
-      },
-      "@lumino/widgets": {
         "bundled": false,
         "singleton": true
       }

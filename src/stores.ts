@@ -2,7 +2,7 @@ import { writable } from 'svelte/store';
 import type { Writable } from 'svelte/store';
 import type { DOMWidgetModel } from '@jupyter-widgets/base';
 import type { IDFProfileWState } from './common/exchangeInterfaces'
-import { Logger } from './logger/Logger';
+// import { Logger } from './logger/Logger';
 
 interface WidgetWritable<T> extends Writable<T> {
   setModel: (m: DOMWidgetModel) => void;
@@ -69,6 +69,3 @@ export function setStoreModels(model: DOMWidgetModel): void {
 export const currentHoveredCol: Writable<string> = writable(undefined);
 export const allowLogs: Writable<boolean> = writable(false);
 export const showIndex: Writable<boolean> = writable(false);
-
-// Logger 
-export const logger = new Logger()
