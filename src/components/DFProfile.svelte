@@ -1,15 +1,11 @@
 <script lang="ts">
     import _ from 'lodash';
-    import { createEventDispatcher } from 'svelte';
 
     import type { IDFProfileWState } from '../common/exchangeInterfaces';
 
     import CollapsibleCard from './nav/CollapsibleCard.svelte';
     import ColumnProfile from './ColumnProfile.svelte';
     import ExpanderButton from './nav/ExpanderButton.svelte';
-    import Pin from './icons/Pin.svelte';
-    import Tooltip from './tooltip/Tooltip.svelte';
-    import TooltipContent from './tooltip/TooltipContent.svelte';
     import { formatInteger } from './utils/formatters';
     import { logger } from '../logger/Logger';
 
@@ -17,9 +13,6 @@
     export let dataframeProfile: IDFProfileWState;
     export let isInFocus = false;
     export let isPinned = false;
-
-    console.log('In Dfprofile the dfName is: ', dfName);
-    console.log('In Dfprofile the dataframeProfile is: ', dataframeProfile);
 
     // locals
     let previewView = 'summaries';
@@ -32,15 +25,6 @@
     let expanded = true;
     let headerHover = false;
 
-    // dispatches
-    const dispatch = createEventDispatcher();
-
-    function handlePin() {
-        dispatch('message', {
-            dfName
-        });
-    }
-
     function handleHeaderHover(event) {
         headerHover = event?.detail?.over;
     }
@@ -48,8 +32,6 @@
     function logAction(name: string) {
         logger.log(name, { dfName });
     }
-
-    let baseClasses = 'grid place-items-center rounded hover:bg-gray-100 ';
 </script>
 
 <div>
@@ -75,31 +57,6 @@
             {#if isInFocus}
                 <div class="focusIndicator justify-end" />
             {/if}
-        </div>
-
-        <div slot="header-no-collapse">
-            <Tooltip location="right" alignment="center" distance={8}>
-                <button
-                    class={baseClasses +
-                        (isPinned
-                            ? 'text-black'
-                            : headerHover
-                            ? 'text-gray-400'
-                            : 'text-transparent')}
-                    style="width: 16px; height: 16px;"
-                    on:click={handlePin}
-                >
-                    <Pin size="16px" />
-                </button>
-
-                <TooltipContent slot="tooltip-content">
-                    {#if isPinned}
-                        Unpin
-                    {:else}
-                        Pin
-                    {/if}
-                </TooltipContent>
-            </Tooltip>
         </div>
 
         <div slot="body" class="dfprofile-body">
