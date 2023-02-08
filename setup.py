@@ -9,7 +9,7 @@ from glob import glob
 import os
 from os.path import join as pjoin
 from setuptools import setup, find_packages
-
+from pathlib import Path
 
 from jupyter_packaging import (
     create_cmdclass,
@@ -19,7 +19,7 @@ from jupyter_packaging import (
     get_version,
 )
 
-HERE = os.path.dirname(os.path.abspath(__file__))
+HERE = Path(__file__).parent.resolve()
 
 
 # The name of the project
@@ -28,6 +28,8 @@ name = 'diginlineprofiler'
 # Get the version
 version = get_version(pjoin(name, '_version.py'))
 
+with open((HERE / "requirements.txt")) as fp:
+    install_requires = fp.read()
 
 # Representative files that should exist after a successful build
 jstargets = [
@@ -91,9 +93,7 @@ setup_args = dict(
     ],
     include_package_data=True,
     python_requires=">=3.6",
-    install_requires=[
-        'ipywidgets>=7.0.0',
-    ],
+    install_requires=install_requires,
     extras_require={
         'examples': [
             # Any requirements for the examples to run

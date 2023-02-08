@@ -11,6 +11,7 @@ Visualizer module for widgets
 from ipywidgets import DOMWidget
 from traitlets import Unicode, Dict
 import pandas as pd
+from varname import argname
 
 from ._frontend import module_name, module_version
 from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getColumns, getShape, \
@@ -33,13 +34,14 @@ class Visualizer(DOMWidget):
     # python only state
     dataframe = None
 
-    def __init__(self, dataframe: pd.DataFrame, dfName: str, *args, **kwargs):
+    def __init__(self, dataframe: pd.DataFrame, *args, **kwargs):
         super(Visualizer, self).__init__(*args, **kwargs)
 
         if not isinstance(dataframe, pd.DataFrame):
             raise ValueError("dataframe must be a pandas DataFrame!")
 
         self.dataframe = dataframe
+        dfName = argname('dataframe')
         self.calculateChartData(dfName)
     
     def calculateChartData(self, dfName: str):
