@@ -33,7 +33,7 @@ notebook / lab frontend. For lab, this is done by the command:
 
 ```
 jupyter labextension develop --overwrite .
-yarn run build
+npm run build
 ```
 
 ### How to see your changes
