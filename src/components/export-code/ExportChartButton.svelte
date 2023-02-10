@@ -1,5 +1,5 @@
 <script lang="ts">
-    import RightArrow from '../icons/RightArrow.svelte';
+    import ExportIcon from '../icons/ExportIcon.svelte';
     import Tooltip from '../tooltip/Tooltip.svelte';
     import TooltipContent from '../tooltip/TooltipContent.svelte';
     import { getContext } from 'svelte';
@@ -49,18 +49,27 @@
     }
 </script>
 
-<div class="flex justify-end w-full">
-    <Tooltip location="bottom" alignment="center" distance={8}>
-        <button
-            class="hover:bg-gray-100 text-gray-400 grid place-items-center rounded"
-            style="width: 16px; height: 16px;"
-            on:click={addVisCode}
-        >
-            <RightArrow size="16px" />
-        </button>
+<div class="flex items-center">
+    <div class="grow" />
 
-        <TooltipContent slot="tooltip-content"
-            >Export chart to code</TooltipContent
-        >
-    </Tooltip>
+    <div class="justify-end">
+        <Tooltip location="bottom" alignment="center" distance={8}>
+            <div
+                class="flex items-center w-full hover:bg-gray-100 text-gray-500"
+                on:click={addVisCode}
+            >
+                <p class="mx-1">Export</p>
+                <button
+                    class=" grid place-items-center rounded"
+                    style="width: 20px; height: 20px;"
+                >
+                    <ExportIcon size="16px" />
+                </button>
+            </div>
+
+            <TooltipContent slot="tooltip-content"
+                >Export chart to code</TooltipContent
+            >
+        </Tooltip>
+    </div>
 </div>
