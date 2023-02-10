@@ -3,15 +3,12 @@
 
     import type { IDFProfileWState } from '../common/exchangeInterfaces';
 
-    import CollapsibleCard from './nav/CollapsibleCard.svelte';
     import ColumnProfile from './ColumnProfile.svelte';
-    import ExpanderButton from './nav/ExpanderButton.svelte';
     import { formatInteger } from './utils/formatters';
-    import { logger } from '../logger/Logger';
 
     export let dfName: string;
     export let dataframeProfile: IDFProfileWState;
-    export let isInFocus = false;
+    export let isInFocus = false; // not used in inline profiler but needed for consistency
     export let isPinned = false;
 
     // locals
@@ -22,75 +19,52 @@
 
     // view variables
     let profileWidth: number;
-    let expanded = true;
-    let headerHover = false;
-
-    function handleHeaderHover(event) {
-        headerHover = event?.detail?.over;
-    }
-
-    function logAction(name: string) {
-        logger.log(name, { dfName });
-    }
 </script>
 
 <div>
-    <CollapsibleCard
-        bind:open={expanded}
-        on:header-hover={handleHeaderHover}
-        on:open={() => logAction('UI.ToggleDFOpen')}
-        on:close={() => logAction('UI.ToggleDFClose')}
-    >
-        <div slot="header" class="dfprofile-header flex gap-1 items-center">
-            <ExpanderButton rotated={expanded} />
+    <div class="dfprofile-header flex gap-1 items-center">
+        <div class="font-bold">
+            {dfName}
+        </div>
 
-            <div class="font-bold">
-                {dfName}
-            </div>
+        <p class="grow">
+            {formatInteger(dataframeProfile?.shape?.[0])} x {formatInteger(
+                dataframeProfile?.shape?.[1]
+            )}
+        </p>
+    </div>
 
-            <p class="grow">
-                {formatInteger(dataframeProfile?.shape?.[0])} x {formatInteger(
-                    dataframeProfile?.shape?.[1]
-                )}
-            </p>
+    <div class="dfprofile-body">
+        <div bind:clientWidth={profileWidth} class="col-profiles">
+            {#if !_.isEmpty(warningMessage)}
+                <div class="pl-2 pr-2 pb-2">
+                    <span class="bg-amber-500 rounded-md p-[3px]"
+                        >Warning
+                    </span>
+                    {warningMessage}
+                </div>
+            {/if}
 
-            {#if isInFocus}
-                <div class="focusIndicator justify-end" />
+            {#if dataframeProfile?.shape?.[1] > 0}
+                {#each dataframeProfile?.profile as column (column.name)}
+                    <ColumnProfile
+                        example={column.example}
+                        {dfName}
+                        colName={column.name}
+                        type={column.type}
+                        summary={column.summary}
+                        nullCount={column.nullCount}
+                        containerWidth={profileWidth}
+                        view={previewView}
+                        totalRows={dataframeProfile?.shape?.[0]}
+                        isIndex={column.isIndex}
+                    />
+                {/each}
+            {:else}
+                <p class="pl-8">No columns!</p>
             {/if}
         </div>
-
-        <div slot="body" class="dfprofile-body">
-            <div bind:clientWidth={profileWidth} class="col-profiles">
-                {#if !_.isEmpty(warningMessage)}
-                    <div class="pl-2 pr-2 pb-2">
-                        <span class="bg-amber-500 rounded-md p-[3px]"
-                            >Warning
-                        </span>
-                        {warningMessage}
-                    </div>
-                {/if}
-
-                {#if dataframeProfile?.shape?.[1] > 0}
-                    {#each dataframeProfile?.profile as column (column.name)}
-                        <ColumnProfile
-                            example={column.example}
-                            {dfName}
-                            colName={column.name}
-                            type={column.type}
-                            summary={column.summary}
-                            nullCount={column.nullCount}
-                            containerWidth={profileWidth}
-                            view={previewView}
-                            totalRows={dataframeProfile?.shape?.[0]}
-                            isIndex={column.isIndex}
-                        />
-                    {/each}
-                {:else}
-                    <p class="pl-8">No columns!</p>
-                {/if}
-            </div>
-        </div>
-    </CollapsibleCard>
+    </div>
 </div>
 
 <style global lang="postcss">
