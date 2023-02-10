@@ -2,6 +2,8 @@
     import RightArrow from '../icons/RightArrow.svelte';
     import Tooltip from '../tooltip/Tooltip.svelte';
     import TooltipContent from '../tooltip/TooltipContent.svelte';
+    import { getContext } from 'svelte';
+    import type { Writable } from 'svelte/store';
 
     import { QUANT_CHART, CAT_CHART, TEMPORAL_CHART } from './ExportableCode';
 
@@ -13,6 +15,10 @@
         shouldDisableMaxRows?: boolean;
     } = undefined;
     export let isIndex = false;
+
+    const exportedCode: Writable<string> = getContext(
+        'inlineprofiler:exportedCode'
+    );
 
     function addVisCode() {
         let text: string;
@@ -35,6 +41,8 @@
         }
 
         console.log(text);
+
+        $exportedCode = text;
 
         // TODO add cell here
         // addCell('code', text);
