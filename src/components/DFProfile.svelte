@@ -9,7 +9,7 @@
     export let dfName: string;
     export let dataframeProfile: IDFProfileWState;
     export let isInFocus = false; // not used in inline profiler but needed for consistency
-    export let isPinned = false;
+    export const isPinned = false;
 
     // locals
     let previewView = 'summaries';
@@ -18,10 +18,23 @@
         : dataframeProfile.warnings.map(w => w.warnMsg).join(', ');
 
     // view variables
-    let profileWidth: number;
+    let profileWidth = 750;
+
+    /**
+     * Svelte container binding not working on initial load (sets to 0), but works on window resize or any re-re-render
+     *  so we default to the max width until a resize
+     * @param inputWidth the width of the container
+     */
+    function binWidth(inputWidth: number) {
+        if (inputWidth <= 0) {
+            return 750;
+        }
+
+        return inputWidth;
+    }
 </script>
 
-<div>
+<div class="inlineprofiler-base-wrapper">
     <div class="dfprofile-header flex gap-1 items-center">
         <div class="font-bold">
             {dfName}
@@ -34,8 +47,8 @@
         </p>
     </div>
 
-    <div class="dfprofile-body">
-        <div bind:clientWidth={profileWidth} class="col-profiles">
+    <div class="dfprofile-body" bind:clientWidth={profileWidth}>
+        <div class="col-profiles">
             {#if !_.isEmpty(warningMessage)}
                 <div class="pl-2 pr-2 pb-2">
                     <span class="bg-amber-500 rounded-md p-[3px]"
@@ -54,7 +67,7 @@
                         type={column.type}
                         summary={column.summary}
                         nullCount={column.nullCount}
-                        containerWidth={profileWidth}
+                        containerWidth={binWidth(profileWidth)}
                         view={previewView}
                         totalRows={dataframeProfile?.shape?.[0]}
                         isIndex={column.isIndex}
@@ -219,5 +232,9 @@
         width: 10px;
         background-color: #1976d2;
         border-radius: 2px;
+    }
+
+    .inlineprofiler-base-wrapper {
+        max-width: 750px;
     }
 </style>
