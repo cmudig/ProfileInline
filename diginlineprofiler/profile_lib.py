@@ -85,7 +85,7 @@ def getTempInterval(dfName: pd.DataFrame, colName: str, isIndex=False):
     else:
         colData = dfName[colName]
     timerange = colData.max() - colData.min()
-    return timerange.days
+    return {"months": 0, "days": timerange.days, "micros": 0}
 
 # def getVariableNamesInPythonStr(codeString: str):
 #     import tokenize, io
