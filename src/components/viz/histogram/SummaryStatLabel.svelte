@@ -2,6 +2,8 @@
     import { fly } from 'svelte/transition';
     import { exportCodeSelection } from '../../export-code/ExportableCode';
     import { formatNumeric } from '../../utils/formatters';
+    import { getContext } from 'svelte';
+    import type { Writable } from 'svelte/store';
 
     // Props
     export let defaultColor: string;
@@ -23,6 +25,10 @@
     export let anchor;
     export let fontSize;
     export let isIndex: boolean;
+
+    const exportedCode: Writable<string> = getContext(
+        'inlineprofiler:exportedCode'
+    );
 
     function formatDisplay(dtype: string, label, value) {
         try {
@@ -54,6 +60,7 @@
             let code = exportCodeSelection(dfName, colName, label, isIndex);
             // addCell('code', code);
             console.log(code);
+            $exportedCode = code;
         }
     }
 </script>
