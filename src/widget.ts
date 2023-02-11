@@ -6,10 +6,8 @@ import {
   DOMWidgetView,
   ISerializers,
 } from '@jupyter-widgets/base';
-import { WidgetWritable } from './stores';
 import { MODULE_NAME, MODULE_VERSION } from './version';
 import Widget from './Widget.svelte'
-import type { IDFProfileWState } from './common/exchangeInterfaces'
 
 export class VizualizerModel extends DOMWidgetModel {
   defaults() {
@@ -21,7 +19,8 @@ export class VizualizerModel extends DOMWidgetModel {
       _view_name: VizualizerModel.view_name,
       _view_module: VizualizerModel.view_module,
       _view_module_version: VizualizerModel.view_module_version,
-      dfProfile: {}
+      dfProfile: {},
+      exportedCode: '',
     };
   }
 
@@ -40,20 +39,6 @@ export class VizualizerModel extends DOMWidgetModel {
 
 export class VizualizerView extends DOMWidgetView {
   render() {
-
-    const dfProfile = WidgetWritable<IDFProfileWState>(
-      'dfProfile',
-      {
-        profile: [],
-        shape: [0, 0],
-        dfName: 'test',
-        lastUpdatedTime: 0,
-        isPinned: false,
-        warnings: []
-      },
-      this.model
-    );
-
-    new Widget({ target: this.el, props: { dfProfileStore: dfProfile } });
+    new Widget({ target: this.el, props: { model: this.model } });
   }
 }

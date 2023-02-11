@@ -9,9 +9,10 @@ Visualizer module for widgets
 """
 
 from ipywidgets import DOMWidget
-from traitlets import Unicode, Dict
+from traitlets import Unicode, Dict, observe
 import pandas as pd
 from varname import argname
+from ipylab import JupyterFrontEnd
 
 from ._frontend import module_name, module_version
 from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getColumns, getShape, \
@@ -30,9 +31,12 @@ class Visualizer(DOMWidget):
 
     # our synced traitlet state
     dfProfile = Dict({}).tag(sync=True)
+    exportedCode = Unicode('').tag(sync=True)
 
     # python only state
     dataframe = None
+    app = JupyterFrontEnd()
+    
 
     def __init__(self, dataframe: pd.DataFrame, *args, **kwargs):
         super(Visualizer, self).__init__(*args, **kwargs)
@@ -114,3 +118,14 @@ class Visualizer(DOMWidget):
         }
         # save profile to trailet to sync with frontend
         self.dfProfile = profile
+
+    @observe('exportedCode')
+    def _observe_exported_code(self, change):
+        """
+        Called when the exportedCode traitlet is changed, we add new code cell on a change
+        """
+        self.addNewCell(change['new'])
+    
+    def addNewCell(self, codeText):
+        self.app.commands.execute('notebook:insert-cell-below')
+        self.app.commands.execute('notebook:replace-selection', {'text': codeText})

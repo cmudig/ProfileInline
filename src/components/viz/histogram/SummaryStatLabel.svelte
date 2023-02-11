@@ -58,8 +58,6 @@
         // alt key or option key on mac
         if (event.altKey) {
             let code = exportCodeSelection(dfName, colName, label, isIndex);
-            // addCell('code', code);
-            console.log(code);
             $exportedCode = code;
         }
     }

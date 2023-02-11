@@ -2,3 +2,4 @@ ipywidgets>=7.0.0
 pandas
 varname
 altair
+ipylab

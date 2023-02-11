@@ -40,12 +40,7 @@
             );
         }
 
-        console.log(text);
-
         $exportedCode = text;
-
-        // TODO add cell here
-        // addCell('code', text);
     }
 </script>
 

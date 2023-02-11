@@ -1,9 +1,5 @@
 <script lang="ts">
     import _ from 'lodash';
-    import { setContext } from 'svelte';
-    import { writable } from 'svelte/store';
-    import type { Writable } from 'svelte/store';
-
     import type { IDFProfileWState } from '../common/exchangeInterfaces';
     import ColumnProfile from './ColumnProfile.svelte';
     import { formatInteger } from './utils/formatters';
@@ -34,15 +30,6 @@
 
         return inputWidth;
     }
-
-    // Local store for exported code
-    let exportedCode: Writable<string> = writable(undefined);
-    setContext('inlineprofiler:exportedCode', exportedCode);
-    function clearExportCode() {
-        $exportedCode = undefined;
-    }
-
-    $: console.log('Exported code is: ', $exportedCode);
 </script>
 
 <div class="inlineprofiler-base-wrapper">
@@ -88,23 +75,6 @@
                 <p class="pl-8">No columns!</p>
             {/if}
         </div>
-        {#if $exportedCode !== undefined && $exportedCode !== ''}
-            <div class="mt-2">
-                <div class="flex mb-1">
-                    <h3 class="font-bold">Exported Code</h3>
-                    <button
-                        on:click={clearExportCode}
-                        class="pl-2 pr-2 mx-2 bg-gray-100 hover:bg-gray-200 text-red-500"
-                    >
-                        Clear
-                    </button>
-                </div>
-
-                <pre>
-{$exportedCode}
-</pre>
-            </div>
-        {/if}
     </div>
 </div>
 
