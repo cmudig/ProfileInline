@@ -4,6 +4,7 @@
     import { formatNumeric } from '../../utils/formatters';
     import { getContext } from 'svelte';
     import type { Writable } from 'svelte/store';
+    import ExportIcon from '../../icons/ExportIcon.svelte';
 
     // Props
     export let defaultColor: string;
@@ -30,6 +31,11 @@
         'inlineprofiler:exportedCode'
     );
 
+    const vizOffset = 5;
+    const buttonSize = 10;
+    const buttonOffsetY = 9;
+    const buttonOffsetX = 11;
+
     function formatDisplay(dtype: string, label, value) {
         try {
             // force float display for mean with decimals
@@ -55,11 +61,8 @@
 
     // Export code
     function handleClick(event: MouseEvent, label) {
-        // alt key or option key on mac
-        if (event.altKey) {
-            let code = exportCodeSelection(dfName, colName, label, isIndex);
-            $exportedCode = code;
-        }
+        let code = exportCodeSelection(dfName, colName, label, isIndex);
+        $exportedCode = code;
     }
 </script>
 
@@ -68,9 +71,26 @@
     on:mouseenter={handleHover}
     on:mouseleave={handleUnhover}
 >
-    <text text-anchor="end" x={left - labelOffset} y={yi} fill={labelColor}>
-        {label}
-    </text>
+    <g
+        on:click={e => handleClick(e, label)}
+        on:mouseenter={handleHover}
+        on:mouseleave={handleUnhover}
+    >
+        <text
+            text-anchor="end"
+            x={left - labelOffset - vizOffset}
+            y={yi}
+            fill={labelColor}
+        >
+            {label}
+        </text>
+
+        <ExportIcon
+            size={buttonSize}
+            x={left - vizOffset - buttonOffsetX}
+            y={yi - buttonOffsetY}
+        />
+    </g>
     <text
         filter="url(#outline-{histogramID})"
         x={x(value) + anchorPlacement}
