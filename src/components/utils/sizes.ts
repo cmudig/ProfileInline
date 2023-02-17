@@ -1,5 +1,5 @@
 export const config = {
-    nullPercentageWidth: 75,
+    nullPercentageWidth: 80,
     compactBreakpoint: 260,
     largeBreakpoint: 500,
     extraLargeBreakpoint: 625,
