@@ -15,10 +15,10 @@ from varname import argname
 from ipylab import JupyterFrontEnd
 
 from ._frontend import module_name, module_version
-from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getColumns, getShape, \
-    getQuantMeta, getColMeta, getValueCounts, getQuantBinnedData, getTempBinnedData, getTempInterval, \
-    getStringStats
-from .utils import convertVC, convertQMeta, convertBinned
+from .profile_lib import isNumeric, isTimestamp, isCategorical, getShape, \
+    getColMeta, getValueCounts, getQuantBinnedData, getTempBinnedData, getTempInterval, \
+    getQuantMeta, getStringMeta, getTemporalMeta
+from .utils import convertVC, convertBinned
 
 class Visualizer(DOMWidget):
     # boilerplate for ipywidgets syncing
@@ -79,31 +79,29 @@ class Visualizer(DOMWidget):
                 # get data
                 chartData = getQuantBinnedData(df, cName, isIndex=False)
                 statistics = getQuantMeta(df, cName, isIndex=False)
+
                 # convert to JSON serializable
-                statistics = convertQMeta(statistics)
                 chartData = convertBinned(chartData, statistics["min"])
 
-                cd["summary"]["statistics"] = statistics
+                cd["summary"]["quantMeta"] = statistics
                 cd["summary"]["histogram"] = chartData
             elif isTimestamp(df[cName]):
                 # get data
                 vc, true_min = getTempBinnedData(df, cName, isIndex=False)
                 interval = getTempInterval(df, cName, isIndex=False)
+                temporalMeta = getTemporalMeta(df, cName, isIndex=False)
 
                 # convert to JSON serializable
                 histogram = convertBinned(vc, true_min)
 
                 cd["summary"]["histogram"] = histogram
                 cd["summary"]["timeInterval"] = interval
+                cd["summary"]["temporalMeta"] = temporalMeta
 
             elif isCategorical(df[cName]):
-                minLength, maxLength, meanLength = getStringStats(df, cName)
+                stringMeta = getStringMeta(df, cName)
 
-                cd["summary"]["stringSummary"] = {
-                    "minLength": minLength,
-                    "maxLength": maxLength,
-                    "meanLength": meanLength
-                }
+                cd["summary"]["stringMeta"] = stringMeta
             
             colProfiles.append(cd)
     

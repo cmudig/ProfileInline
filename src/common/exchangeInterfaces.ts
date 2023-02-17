@@ -50,6 +50,12 @@ export type IQuantMeta = {
     q75: number;
     max: number;
     mean: number;
+    sd_outlier: number;
+    iqr_outlier: number;
+    sortedness: string;
+    n_zero: number;
+    n_positive: number;
+    n_negative: number;
 };
 
 export type IColMeta = {
@@ -63,6 +69,9 @@ export type IStringMeta = {
     meanLength: number;
 };
 
+export type ITemporalMeta = {
+    sortedness: string;
+}
 export type ColumnProfileData = {
     name: string;
     type: string;
@@ -76,9 +85,11 @@ export interface ColumnSummary {
     cardinality: number; // num unique
     topK: ValueCount[];
     histogram?: IHistogram;
-    statistics?: IQuantMeta;
     timeInterval?: Interval;
-    stringSummary?: IStringMeta;
+    statistics?: IQuantMeta;
+    quantMeta?: IQuantMeta;
+    stringMeta?: IStringMeta;
+    temporalMeta?: ITemporalMeta;
 }
 
 

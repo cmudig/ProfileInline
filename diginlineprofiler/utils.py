@@ -5,7 +5,7 @@ def convertVC(vc: pd.Series, colName: str):
         columns={"index": "value", 
         colName: "count"}).to_dict('records')
 
-def convertQMeta(statistics: pd.Series):
+def convertDescribe(statistics: pd.Series):
     s = statistics.to_dict()
 
     return {
