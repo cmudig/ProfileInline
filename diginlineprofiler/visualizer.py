@@ -72,36 +72,37 @@ class Visualizer(DOMWidget):
                     "topK": convertVC(vc, cName) # TODO this might not be right type
                 },
                 "nullCount": num_null,
-                "example": vc.index[0]
+                "example": "example"
             }
 
-            if isNumeric(df[cName]):
-                # get data
-                chartData = getQuantBinnedData(df, cName, isIndex=False)
-                statistics = getQuantMeta(df, cName, isIndex=False)
+            if num_null != shape[0]:
+                if isNumeric(df[cName]):
+                    # get data
+                    chartData = getQuantBinnedData(df, cName, isIndex=False)
+                    statistics = getQuantMeta(df, cName, isIndex=False)
 
-                # convert to JSON serializable
-                chartData = convertBinned(chartData, statistics["min"])
+                    # convert to JSON serializable
+                    chartData = convertBinned(chartData, statistics["min"])
 
-                cd["summary"]["quantMeta"] = statistics
-                cd["summary"]["histogram"] = chartData
-            elif isTimestamp(df[cName]):
-                # get data
-                vc, true_min = getTempBinnedData(df, cName, isIndex=False)
-                interval = getTempInterval(df, cName, isIndex=False)
-                temporalMeta = getTemporalMeta(df, cName, isIndex=False)
+                    cd["summary"]["quantMeta"] = statistics
+                    cd["summary"]["histogram"] = chartData
+                elif isTimestamp(df[cName]):
+                    # get data
+                    vc, true_min = getTempBinnedData(df, cName, isIndex=False)
+                    interval = getTempInterval(df, cName, isIndex=False)
+                    temporalMeta = getTemporalMeta(df, cName, isIndex=False)
 
-                # convert to JSON serializable
-                histogram = convertBinned(vc, true_min)
+                    # convert to JSON serializable
+                    histogram = convertBinned(vc, true_min)
 
-                cd["summary"]["histogram"] = histogram
-                cd["summary"]["timeInterval"] = interval
-                cd["summary"]["temporalMeta"] = temporalMeta
+                    cd["summary"]["histogram"] = histogram
+                    cd["summary"]["timeInterval"] = interval
+                    cd["summary"]["temporalMeta"] = temporalMeta
 
-            elif isCategorical(df[cName]):
-                stringMeta = getStringMeta(df, cName)
+                elif isCategorical(df[cName]):
+                    stringMeta = getStringMeta(df, cName)
 
-                cd["summary"]["stringMeta"] = stringMeta
+                    cd["summary"]["stringMeta"] = stringMeta
             
             colProfiles.append(cd)
     
