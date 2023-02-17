@@ -9,6 +9,7 @@ include tsconfig.json
 include package.json
 include webpack.config.js
 include diginlineprofiler/labextension/*.tgz
+include requirements.txt
 
 # Documentation
 graft docs
