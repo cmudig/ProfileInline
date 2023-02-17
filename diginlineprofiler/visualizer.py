@@ -123,7 +123,10 @@ class Visualizer(DOMWidget):
         Called when the exportedCode traitlet is changed, we add new code cell on a change
         """
         self.addNewCell(change['new'])
+        self.exportedCode = ''
     
     def addNewCell(self, codeText):
+        if codeText == '':
+            return
         self.app.commands.execute('notebook:insert-cell-below')
         self.app.commands.execute('notebook:replace-selection', {'text': codeText})
