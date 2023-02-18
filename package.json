@@ -1,6 +1,6 @@
 {
   "name": "diginlineprofiler",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Inline data profiles for pandas dataframes in jupyter",
   "keywords": [
     "jupyter",
