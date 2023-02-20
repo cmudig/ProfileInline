@@ -100,12 +100,24 @@
                     <!-- check to see if the summary has cardinality. Otherwise do not show these values.-->
                     {#if totalRows}
                         {#if (CATEGORICALS.has(type) || BOOLEANS.has(type)) && summary?.cardinality}
-                            <BarAndLabel
-                                color={DATA_TYPE_COLORS[type].bgClass}
-                                value={summary?.cardinality / totalRows}
+                            <Tooltip
+                                location="bottom"
+                                alignment="right"
+                                distance={8}
                             >
-                                |{cardinalityFormatter(summary?.cardinality)}|
-                            </BarAndLabel>
+                                <BarAndLabel
+                                    color={DATA_TYPE_COLORS[type].bgClass}
+                                    value={summary?.cardinality / totalRows}
+                                >
+                                    |{cardinalityFormatter(
+                                        summary?.cardinality
+                                    )}|
+                                </BarAndLabel>
+                                <TooltipContent slot="tooltip-content">
+                                    {cardinalityFormatter(summary?.cardinality)}
+                                    unique values
+                                </TooltipContent>
+                            </Tooltip>
                         {:else if NUMERICS.has(type) && summary?.histogram?.length}
                             <Histogram
                                 data={summary.histogram}
