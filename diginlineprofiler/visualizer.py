@@ -15,7 +15,7 @@ from varname import argname
 from ipylab import JupyterFrontEnd
 
 from ._frontend import module_name, module_version
-from .profile_lib import isNumeric, isTimestamp, isCategorical, getShape, \
+from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getShape, \
     getColMeta, getValueCounts, getQuantBinnedData, getTempBinnedData, getTempInterval, \
     getQuantMeta, getStringMeta, getTemporalMeta
 from .utils import convertVC, convertBinned
@@ -76,7 +76,7 @@ class Visualizer(DOMWidget):
             }
 
             if num_null != shape[0]:
-                if isNumeric(df[cName]):
+                if isNumeric(df[cName]) and not isBoolean(df[cName]):
                     # get data
                     chartData = getQuantBinnedData(df, cName, isIndex=False)
                     statistics = getQuantMeta(df, cName, isIndex=False)
