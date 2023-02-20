@@ -101,8 +101,8 @@
                     {#if totalRows}
                         {#if (CATEGORICALS.has(type) || BOOLEANS.has(type)) && summary?.cardinality}
                             <Tooltip
-                                location="bottom"
-                                alignment="right"
+                                location="left"
+                                alignment="center"
                                 distance={8}
                             >
                                 <BarAndLabel
