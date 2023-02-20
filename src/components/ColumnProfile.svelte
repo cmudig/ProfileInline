@@ -108,6 +108,7 @@
                                 <BarAndLabel
                                     color={DATA_TYPE_COLORS[type].bgClass}
                                     value={summary?.cardinality / totalRows}
+                                    height={20}
                                 >
                                     |{cardinalityFormatter(
                                         summary?.cardinality
@@ -122,7 +123,7 @@
                             <Histogram
                                 data={summary.histogram}
                                 width={summaryWidthSize}
-                                height={18}
+                                height={20}
                                 fillColor={DATA_TYPE_COLORS[type].vizFillClass}
                                 baselineStrokeColor={DATA_TYPE_COLORS[type]
                                     .vizStrokeClass}
@@ -131,7 +132,7 @@
                             <Histogram
                                 data={summary.histogram}
                                 width={summaryWidthSize}
-                                height={18}
+                                height={20}
                                 fillColor={DATA_TYPE_COLORS[type].vizFillClass}
                                 baselineStrokeColor={DATA_TYPE_COLORS[type]
                                     .vizStrokeClass}
@@ -152,6 +153,7 @@
                                 showBackground={nullCount !== 0}
                                 color={'numNullsColor'}
                                 value={nullCount / totalRows || 0}
+                                height={20}
                             >
                                 <span class:text-gray-300={nullCount === 0}
                                     >∅ {formatPercentage(
