@@ -12,7 +12,9 @@ from ipywidgets import DOMWidget
 from traitlets import Unicode, Dict, observe
 import pandas as pd
 from varname import argname
+from varname.utils import ImproperUseError
 from ipylab import JupyterFrontEnd
+import warnings
 
 from ._frontend import module_name, module_version
 from .profile_lib import isNumeric, isTimestamp, isCategorical, isBoolean, getShape, \
@@ -45,7 +47,12 @@ class Visualizer(DOMWidget):
             raise ValueError("dataframe must be a pandas DataFrame!")
 
         self.dataframe = dataframe
-        dfName = argname('dataframe')
+        try:
+            dfName = argname('dataframe')
+        except ImproperUseError:
+            warnings.warn("Export to code will not work if dataframe is not assigned to variable before passing to Visualizer.", stacklevel=2)
+            dfName = 'UnnamedDataFrame'
+
         self.calculateChartData(dfName)
     
     def calculateChartData(self, dfName: str):
