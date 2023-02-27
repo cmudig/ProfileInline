@@ -69,6 +69,8 @@
             />
         {:else if validatedChartType === 'cat'}
             <TopKSummary
+                {dfName}
+                {colName}
                 color={DATA_TYPE_COLORS[type].bgClass}
                 {totalRows}
                 topK={summary.topK}
