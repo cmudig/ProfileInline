@@ -101,7 +101,8 @@
                         {dfName}
                         {colName}
                         exportOptions={{
-                            shouldDisableMaxRows: totalRows > 5000
+                            shouldDisableMaxRows: totalRows > 5000,
+                            numBins: summary?.histogram?.length ?? 8
                         }}
                         {isIndex}
                     />
