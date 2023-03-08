@@ -36,8 +36,18 @@ class Logger {
     }
 
     save() {
+
+        // let currentLogStr = localStorage.getItem("inlineprofilelogs")
+        // let currentLogs: LogEvent[] = []
+
+        // if (currentLogStr) {
+        //     currentLogs = JSON.parse(currentLogStr)
+        // }
+
+        localStorage.setItem("inlineprofilelogs", JSON.stringify(this._logs))
+        this.printAllLogs()
+
         const allowSave = get(allowLogs)
-        // this.printAllLogs()
         if (this._notebook && allowSave) {
             this._notebook.saveToNotebookMetadata("AutoProfilerLogs", this._logs)
         }

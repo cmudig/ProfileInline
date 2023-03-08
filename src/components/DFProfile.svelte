@@ -3,6 +3,7 @@
     import type { IDFProfileWState } from '../common/exchangeInterfaces';
     import ColumnProfile from './ColumnProfile.svelte';
     import { formatInteger } from './utils/formatters';
+    import { logger } from '../logger/Logger';
 
     export let dfName: string;
     export let dataframeProfile: IDFProfileWState;
@@ -29,6 +30,12 @@
         }
 
         return inputWidth;
+    }
+
+    $: if (!_.isUndefined(dfName)) {
+        logger.log('plot', {
+            dfName
+        });
     }
 </script>
 

@@ -5,6 +5,7 @@
     import { getContext } from 'svelte';
     import type { Writable } from 'svelte/store';
     import ExportIcon from '../../icons/ExportIcon.svelte';
+    import { logger } from '../../../logger/Logger';
 
     // Props
     export let defaultColor: string;
@@ -63,6 +64,12 @@
     function handleClick(event: MouseEvent, label) {
         let code = exportCodeSelection(dfName, colName, label, isIndex);
         $exportedCode = code;
+        logger.log('export', {
+            dfName,
+            colName,
+            exportType: 'stat',
+            selectionType: label
+        });
     }
 </script>
 

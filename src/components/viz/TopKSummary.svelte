@@ -8,6 +8,7 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
     import TooltipContent from '../tooltip/TooltipContent.svelte';
     import type { Writable } from 'svelte/store';
+    import { logger } from '../../logger/Logger';
 
     export let totalRows: number;
     export let topK: ValueCount[];
@@ -31,6 +32,12 @@
         // event.altKey alt key or option key on mac
         let code = exportCatValue(dfName, colName, value);
         $exportedCode = code;
+        logger.log('export', {
+            dfName,
+            colName,
+            exportType: 'selection',
+            selectionType: 'category'
+        });
     }
 </script>
 

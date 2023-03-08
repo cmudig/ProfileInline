@@ -9,6 +9,7 @@
     import { exportQuantBin } from '../../export-code/ExportableCode';
     import { getContext } from 'svelte';
     import type { Writable } from 'svelte/store';
+    import { logger } from '../../../logger/Logger';
 
     export let data: IHistogram;
     export let width = 60;
@@ -100,6 +101,12 @@
                     value.bucket == 0
                 );
                 $exportedCode = code;
+                logger.log('export', {
+                    dfName,
+                    colName,
+                    exportType: 'selection',
+                    selectionType: 'quantBin'
+                });
             }
         }
     }

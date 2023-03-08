@@ -4,6 +4,7 @@
     import Tooltip from '../tooltip/Tooltip.svelte';
     import TooltipContent from '../tooltip/TooltipContent.svelte';
     import type { Writable } from 'svelte/store';
+    import { logger } from '../../logger/Logger';
 
     import { DUPLICATES, IQR_OUTLIERS, SD_OUTLIERS } from './ExportableCode';
 
@@ -26,6 +27,12 @@
             text = DUPLICATES(dfName, colName, isIndex);
         }
         $exportedCode = text;
+        logger.log('export', {
+            dfName,
+            colName,
+            exportType: 'summary',
+            selectionType: type
+        });
     }
 </script>
 

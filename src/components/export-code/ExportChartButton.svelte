@@ -4,6 +4,7 @@
     import TooltipContent from '../tooltip/TooltipContent.svelte';
     import { getContext } from 'svelte';
     import type { Writable } from 'svelte/store';
+    import { logger } from '../../logger/Logger';
 
     import { QUANT_CHART, CAT_CHART, TEMPORAL_CHART } from './ExportableCode';
 
@@ -41,6 +42,11 @@
         }
 
         $exportedCode = text;
+        logger.log('export', {
+            dfName,
+            colName,
+            exportType: 'chart'
+        });
     }
 </script>
 
