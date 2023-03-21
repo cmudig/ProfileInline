@@ -3,7 +3,9 @@
 <!-- [![Build Status](https://travis-ci.org/cmudig/ProfileInline.svg?branch=master)](https://travis-ci.org/cmudig/diginlineprofiler)
 [![codecov](https://codecov.io/gh/cmudig/ProfileInline/branch/master/graph/badge.svg)](https://codecov.io/gh/cmudig/ProfileInline) -->
 
-Inline data profiles
+Inline data profiles to help you understand your data with one function.
+
+Check out [AutoProfiler](https://github.com/cmudig/AutoProfiler) for a version that updates automatically when you change your data.
 
 ## Installation
 
@@ -12,6 +14,22 @@ You can install using `pip`:
 ```bash
 pip install diginlineprofiler
 ```
+
+## Usage
+
+Import in a Jupyter notebook or lab then pass in any pandas dataframe.
+
+```python
+from diginlineprofiler import Visualizer as plot # here we rename to plot but can be anything
+
+# df must be a pandas dataframe!
+plot(df)
+```
+
+![screenshot of InlineProfiler](https://raw.githubusercontent.com/cmudig/ProfileInline/main/.github/screenshots/inline-preview.png)
+
+
+
 
 ## Development Installation
 
